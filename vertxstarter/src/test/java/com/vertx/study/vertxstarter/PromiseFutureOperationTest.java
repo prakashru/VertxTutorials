@@ -51,4 +51,22 @@ public class PromiseFutureOperationTest {
      context.completeNow();
    }).onFailure(context::failNow);
   }
+
+  @Test
+  void future_failure(Vertx vertx, VertxTestContext context) {
+    final Promise<String> promise = Promise.promise();
+    System.out.println("Start");
+    vertx.setTimer(500, id -> {
+      promise.fail(new RuntimeException("Failed!"));
+      System.out.println("Timer done.");
+    });
+    final Future<String> future = promise.future();
+    future
+      .onSuccess(context::failNow)
+      .onFailure(error -> {
+        System.out.println("Result: "+error);
+        context.completeNow();
+      });
+  }
+
 }
