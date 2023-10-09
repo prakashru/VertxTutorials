@@ -29,21 +29,20 @@ public class VertxWebMain extends AbstractVerticle {
 
   }
 
-
   @Override
   public void start(final Promise<Void> startPromise) throws Exception {
     System.out.println("Started Vertx Web");
     final Router routerApi= Router.router(vertx);
-   routerApi.get("/assets").handler(context->{
-     final JsonArray response=new JsonArray();
-     response.add(new JsonObject().put("symbol", "AAPL"))
-       .add(new JsonObject().put("symbol","AMZN"))
-       .add(new JsonObject().put("symbol", "NFLX"));
-     System.out.println("Response {} "+response);
-     System.out.println("Response {} "+context.normalizedPath());
-     context.response().end(response.toBuffer());
-   });
-
+    routerApi.route().failureHandler(errorContext->{
+      if(errorContext.response().ended()){
+        return;
+      }
+      System.out.println("Route Error {}"+errorContext.failure());
+      errorContext.response()
+        .setStatusCode(500)
+        .end(new JsonObject().put("error", "Error handling Custom Object").toBuffer());
+    });
+    AttachRouter.attach(routerApi);
 //    vertx.createHttpServer()
 //      .requestHandler(req->{
 //      req.response()
