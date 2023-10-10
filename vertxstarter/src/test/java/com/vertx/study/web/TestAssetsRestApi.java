@@ -28,7 +28,7 @@ public class TestAssetsRestApi {
       .onComplete(testContext.succeeding(response->{
         var json=response.bodyAsJsonArray();
         System.out.println("response {} "+json);
-        assertEquals("", json.encode());
+        assertEquals("[{\"symbol\":\"symbol\",\"code\":\"PPPP\"},{\"symbol\":\"symbol\",\"code\":\"AAAA\"},{\"symbol\":\"symbol\",\"code\":\"BBBB\"}]", json.encode());
         assertEquals(200, response.statusCode());
         testContext.completeNow();
       }));
