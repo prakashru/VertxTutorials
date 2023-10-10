@@ -1,17 +1,17 @@
 package com.vertx.study.web;
 
 import com.vertx.study.verticlecopy.VerticleN;
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.DeploymentOptions;
-import io.vertx.core.Promise;
-import io.vertx.core.Vertx;
+import io.vertx.core.*;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
+import io.vertx.ext.web.RoutingContext;
 
 import java.util.UUID;
 
 public class VertxWebMain extends AbstractVerticle {
+
+  public final static int PORT = 8888;
 
   public static void main(String[] args) {
 
@@ -33,15 +33,7 @@ public class VertxWebMain extends AbstractVerticle {
   public void start(final Promise<Void> startPromise) throws Exception {
     System.out.println("Started Vertx Web");
     final Router routerApi= Router.router(vertx);
-    routerApi.route().failureHandler(errorContext->{
-      if(errorContext.response().ended()){
-        return;
-      }
-      System.out.println("Route Error {}"+errorContext.failure());
-      errorContext.response()
-        .setStatusCode(500)
-        .end(new JsonObject().put("error", "Error handling Custom Object").toBuffer());
-    });
+    routerApi.route().failureHandler(handleFailuer());
     AttachRouter.attach(routerApi);
 //    vertx.createHttpServer()
 //      .requestHandler(req->{
@@ -57,11 +49,12 @@ public class VertxWebMain extends AbstractVerticle {
 //        startPromise.fail(http.cause());
 //      }
 //    });
+
     vertx.createHttpServer()
       .requestHandler(routerApi)
       .exceptionHandler(error->{
         System.out.println("Error "+ error);
-      }).listen(8888 , http->{
+      }).listen(PORT, http->{
         if (http.succeeded()) {
           startPromise.complete();
           System.out.println("Started at port 8888");
@@ -71,5 +64,17 @@ public class VertxWebMain extends AbstractVerticle {
         }
       });
 
+  }
+
+  private static Handler<RoutingContext> handleFailuer() {
+    return errorContext -> {
+      if (errorContext.response().ended()) {
+        return;
+      }
+      System.out.println("Route Error {}" + errorContext.failure());
+      errorContext.response()
+        .setStatusCode(500)
+        .end(new JsonObject().put("error", "Error handling Custom Object").toBuffer());
+    };
   }
 }
