@@ -1,7 +1,6 @@
 package com.vertx.study.vertxstarter;
 
-import com.vertx.study.Person;
-import io.vertx.core.json.Json;
+import com.vertx.study.pojo.Person;
 import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import org.junit.jupiter.api.Test;

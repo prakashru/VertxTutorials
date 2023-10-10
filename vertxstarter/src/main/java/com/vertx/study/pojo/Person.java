@@ -1,4 +1,4 @@
-package com.vertx.study;
+package com.vertx.study.pojo;
 
 public class Person {
 
