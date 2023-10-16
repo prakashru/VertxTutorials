@@ -1,71 +1,28 @@
 package com.vertx.study.web;
 
-
-import io.vertx.core.*;
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Handler;
+import io.vertx.core.Promise;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 
-
-
-public class VertxWebMain extends AbstractVerticle {
-
-  public final static int PORT = 8888;
-
-
-  public static void main(String[] args) {
-    var vertx= Vertx.vertx();
-    vertx.exceptionHandler(error->{
-      System.out.println("Unhandled Error {} "+error);
-    });
-    vertx.deployVerticle(new VertxWebMain())
-      .onFailure(err-> System.out.println("Failed to Deploy "+err))
-      .onSuccess(id->{
-        System.out.println("Deployed {} "+RestApiVerticles.class.getName()+ " with id {} "+id);
-      });
-  }
-
-  public static void mainCopy(String[] args) {
-
-    var vertx= Vertx.vertx();
-    vertx.exceptionHandler(error->{
-      System.out.println("Unhandled Error {} "+error);
-    });
-    vertx.deployVerticle(new VertxWebMain(), ar->{
-      if(ar.failed()){
-        System.out.println("Failed to start a service {} "+ar.cause());
-        return;
-      }
-      System.out.println("Main class");
-    });
-
-  }
+public class RestApiVerticles extends AbstractVerticle {
 
   @Override
   public void start(final Promise<Void> startPromise) throws Exception {
-   vertx.deployVerticle(RestApiVerticles.class.getName(),
-       new DeploymentOptions().setInstances(processor()))
-     .onFailure(startPromise::fail)
-     .onSuccess(id->{
-       System.out.println("Deployed {} "+RestApiVerticles.class.getName()+ " with id {} "+id);
-       startPromise.complete();
-     });
-
+    startRestApiVerticlesWithScalling(startPromise);
   }
 
-  private static int processor() {
-    return Math.max(1, Runtime.getRuntime().availableProcessors()/2);
-  }
-
-  private void startRestApiVerticlesWithScalling1(Promise<Void> startPromise) {
+  private void startRestApiVerticlesWithScalling(Promise<Void> startPromise) {
     System.out.println("Started Vertx Web");
     final Router routerApi= Router.router(vertx);
     routerApi
       .route()
       .handler(BodyHandler.create()
-       // .setBodyLimit(1024)
-       // .setHandleFileUploads(true)
+        // .setBodyLimit(1024)
+        // .setHandleFileUploads(true)
       )
       .failureHandler(handleFailuer());
     AttachRouter.attach(routerApi);
@@ -92,7 +49,7 @@ public class VertxWebMain extends AbstractVerticle {
       .requestHandler(routerApi)
       .exceptionHandler(error->{
         System.out.println("Error "+ error);
-      }).listen(PORT, http->{
+      }).listen(VertxWebMain.PORT, http->{
         if (http.succeeded()) {
           startPromise.complete();
           System.out.println("Started at port 8888");
