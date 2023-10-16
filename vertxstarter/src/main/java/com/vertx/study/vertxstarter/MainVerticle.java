@@ -28,7 +28,7 @@ public class MainVerticle extends AbstractVerticle {
 
   @Override
   public void start(final Promise<Void> startPromise) throws Exception {
-    LOGGER.info("Starting Main Verticles "+ this.getClass().getName().toString());
+    LOGGER.info("Starting Main Verticles "+ this.getClass().getName());
 //    vertx.deployVerticle(new VerticleA());
 //    vertx.deployVerticle(new VerticleB());
 //    vertx.deployVerticle(VerticleN.class.getName(),

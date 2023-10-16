@@ -6,7 +6,9 @@ import io.vertx.core.json.JsonArray;
 import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
+import io.vertx.ext.web.handler.BodyHandler;
 
+import java.nio.channels.SelectionKey;
 import java.util.UUID;
 
 public class VertxWebMain extends AbstractVerticle {
@@ -33,8 +35,18 @@ public class VertxWebMain extends AbstractVerticle {
   public void start(final Promise<Void> startPromise) throws Exception {
     System.out.println("Started Vertx Web");
     final Router routerApi= Router.router(vertx);
-    routerApi.route().failureHandler(handleFailuer());
+    routerApi
+      .route()
+      .handler(BodyHandler.create()
+       // .setBodyLimit(1024)
+       // .setHandleFileUploads(true)
+      )
+      .failureHandler(handleFailuer());
     AttachRouter.attach(routerApi);
+    QueryApiRouter.attach(routerApi);
+    WatchListRestApi.attach(routerApi);
+
+
 //    vertx.createHttpServer()
 //      .requestHandler(req->{
 //      req.response()

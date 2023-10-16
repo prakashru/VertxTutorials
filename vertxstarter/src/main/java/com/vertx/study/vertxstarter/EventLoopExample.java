@@ -31,7 +31,7 @@ public class EventLoopExample extends AbstractVerticle {
         .setEventLoopPoolSize(2)
     );
     vertx.deployVerticle(EventLoopExample.class.getName(),
-      new DeploymentOptions().setInstances(4)
+      new DeploymentOptions().setInstances(40)
     );
     //logger.info("Active thread 2:"+Thread.activeCount());
   }

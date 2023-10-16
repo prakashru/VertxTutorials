@@ -17,13 +17,13 @@ public class PingPongCustomeCodec {
   }
 
   public static class PingVerticle extends AbstractVerticle {
-    static final String ADDRESS = PingVerticle.class.getName().toString();
+    static final String ADDRESS = PingVerticle.class.getName();
     @Override
     public void start(final Promise<Void> startPromise) throws Exception {
 
       var eventBus=vertx.eventBus();
       final Ping message=new Ping(1, true);
-      System.out.println("Sending message "+message.toString());
+      System.out.println("Sending message "+ message);
       eventBus.registerDefaultCodec(Ping.class, new LocalMessageCodec<>(Ping.class));
       eventBus.<Pong>request(ADDRESS, message, reply->{
         if(reply.failed()){

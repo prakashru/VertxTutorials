@@ -20,7 +20,7 @@ public class PointToPointMessagingEventBus {
       String message="Sending a new message";
       System.out.println("Sending message: "+message);
       vertx.setPeriodic(500, id->{
-        vertx.eventBus().send(ADDRESS, message+String.valueOf(id));
+        vertx.eventBus().send(ADDRESS, message+ id);
       });
     }
   }

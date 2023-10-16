@@ -24,9 +24,9 @@ public class AttachRouter {
     parent.get("/assets").handler(context -> {
       final JsonArray response = new JsonArray();
       response
-        .add(new Assets("symbol", "PPPP"))
-        .add(new Assets("symbol", "AAAA"))
-        .add(new Assets("symbol", "BBBB"));
+        .add(new Assets( "PPPP"))
+        .add(new Assets("AAAA"))
+        .add(new Assets( "BBBB"));
       System.out.println("Response {} " + response);
       System.out.println("Response {} " + context.normalizedPath());
       context.response().end(response.toBuffer());

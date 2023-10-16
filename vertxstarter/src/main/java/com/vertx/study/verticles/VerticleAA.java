@@ -16,7 +16,7 @@ public class VerticleAA extends AbstractVerticle {
 
   @Override
   public void stop(final Promise<Void> stopPromise) throws Exception {
-    LOGGER.debug("Stop "+ this.getClass().getName().toString());
+    LOGGER.debug("Stop "+ this.getClass().getName());
     stopPromise.complete();
   }
 }
