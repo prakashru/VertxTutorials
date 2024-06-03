@@ -17,6 +17,8 @@ public class Quote {
   BigDecimal lastPrice;
   BigDecimal valumn;
 
+  //POJO
+
 
   public JsonObject toJsonObject() {
     return JsonObject.mapFrom(this);
