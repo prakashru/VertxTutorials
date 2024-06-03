@@ -22,10 +22,11 @@ public class PingPongCustomeCodec {
     public void start(final Promise<Void> startPromise) throws Exception {
 
       var eventBus=vertx.eventBus();
-      final Ping message=new Ping(1, true);
+      final Ping message=new Ping(1010101, true);
       System.out.println("Sending message "+ message);
       eventBus.registerDefaultCodec(Ping.class, new LocalMessageCodec<>(Ping.class));
       eventBus.<Pong>request(ADDRESS, message, reply->{
+
         if(reply.failed()){
           System.out.println("Failed "+reply.cause());
           return;

@@ -7,8 +7,6 @@ import io.vertx.ext.web.Router;
 import io.vertx.ext.web.RoutingContext;
 import io.vertx.ext.web.handler.BodyHandler;
 
-
-
 public class VertxWebMain extends AbstractVerticle {
 
   public final static int PORT = 8888;
@@ -44,6 +42,7 @@ public class VertxWebMain extends AbstractVerticle {
 
   @Override
   public void start(final Promise<Void> startPromise) throws Exception {
+    System.out.println("Test Vertx Web Main Verticle");
    vertx.deployVerticle(RestApiVerticles.class.getName(),
        new DeploymentOptions().setInstances(processor()))
      .onFailure(startPromise::fail)
@@ -58,7 +57,7 @@ public class VertxWebMain extends AbstractVerticle {
     return Math.max(1, Runtime.getRuntime().availableProcessors()/2);
   }
 
-  private void startRestApiVerticlesWithScalling1(Promise<Void> startPromise) {
+  private void startRestApiVerticlesWithScalling(Promise<Void> startPromise) {
     System.out.println("Started Vertx Web");
     final Router routerApi= Router.router(vertx);
     routerApi

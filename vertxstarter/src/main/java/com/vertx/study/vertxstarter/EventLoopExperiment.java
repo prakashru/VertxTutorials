@@ -40,7 +40,8 @@ public class EventLoopExperiment extends AbstractVerticle {
 
     final CountDownLatch latch = new CountDownLatch(verticles);
     for(int i=0;i<verticles;i++) {
-      vertx1.deployVerticle(new EventLoopExperiment(threadCounts), c -> latch.countDown());
+      vertx1.deployVerticle(new EventLoopExperiment(threadCounts),
+        c -> latch.countDown());
     }
     latch.await();
     logger.info("After deploying 1000 verticles "+Thread.activeCount());

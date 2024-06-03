@@ -15,7 +15,8 @@ public class PublisherSubscriverEventBus {
     vertx.deployVerticle(new Publisher());
     vertx.deployVerticle(new SubscriberOne());
     vertx.deployVerticle(new SubscriberTwo());
-    vertx.deployVerticle(SubscriberTwo.class.getName(), new DeploymentOptions().setInstances(2));
+    vertx.deployVerticle(SubscriberTwo.class.getName(),
+      new DeploymentOptions().setInstances(2));
   }
   public static class Publisher extends AbstractVerticle {
     static final String ADDRESS = "my.request.address";
